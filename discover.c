@@ -17,14 +17,14 @@ void discover_rec(char *path) {
             if (strncmp(dir_con->d_name, ".", 1) != 0) {
                 printf("%s/%s\n", path, dir_con->d_name);
 
-                printf("%d\n", IsDir(dir_con->d_name));
+                // printf("%d\n", IsDir(dir_con->d_name));
 
                 if (IsDir(dir_con->d_name)) {
                     char path1[MAXLEN] = "";
                     strcpy(path1, path);
                     strcat(path1, "/");
                     strcat(path1, dir_con->d_name);
-                    printf("path1 = %s\n", path);
+                    printf("path1 = %s\n", path1);
                     discover_rec(path1);
                 }
             }
@@ -48,7 +48,10 @@ void discover(char *cmd) {
     char path[MAXLEN];
     path[0] = '\0';
 
-    strcpy(path, cmd);
+    if (cmd[0] == '\0')
+        strcat(path, ".");
+    else
+        strcpy(path, cmd);
     printf("%s\n", path);
 
     discover_rec(path);
