@@ -17,7 +17,7 @@ int allign_str(char *message) {
         message[get_size(message)-1] = '\0';
     }
 
-    while(message[get_size(message)-1] == ' ') {
+    while(message[get_size(message)-1] == ' ' | message[get_size(message)-1] == '\n') {
         message[get_size(message)-1] = '\0';
     }
 
