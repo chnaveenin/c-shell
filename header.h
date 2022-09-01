@@ -22,4 +22,6 @@ int get_size(char *path);
 
 int allign_str(char *message);
 
+void commands(char *cmd);
+
 #endif
