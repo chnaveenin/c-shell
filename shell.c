@@ -32,7 +32,7 @@ void commands(char *cmd) {
         pinfo(cmd+5);
     }
 
-    else if (strcmp(cmd, "discover") == 0 || strncmp(cmd, "pinfo ", sizeof("discover ")-1) == 0) {
+    else if (strcmp(cmd, "discover") == 0 || strncmp(cmd, "discover ", sizeof("discover ")-1) == 0) {
         discover(cmd+8);
     }
 
