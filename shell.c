@@ -1,8 +1,10 @@
 #include "header.h"
 #include "cd.h"
+#include "discover.h"
 #include "echo.h"
 #include "exec.h"
 #include "ls.h"
+#include "pinfo.h"
 #include "prompt.h"
 #include "pwd.h"
 
@@ -23,7 +25,15 @@ void commands(char *cmd) {
     }
 
     else if (strcmp(cmd, "ls") == 0 || strncmp(cmd, "ls ", sizeof("ls ")-1) == 0) {
-        ls();
+        ls(cmd+2);
+    }
+
+    else if (strcmp(cmd, "pinfo") == 0 || strncmp(cmd, "pinfo ", sizeof("pinfo ")-1) == 0) {
+        pinfo(cmd+5);
+    }
+
+    else if (strcmp(cmd, "discover") == 0 || strncmp(cmd, "pinfo ", sizeof("discover ")-1) == 0) {
+        discover(cmd+8);
     }
 
     return;

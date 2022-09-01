@@ -1,5 +1,19 @@
 #include "prompt.h"
 
+int IsDir(char *filename) {
+    struct stat check;
+    stat(filename, &check);
+
+    return S_ISDIR(check.st_mode);
+}
+
+int IsExe(char *filename) {
+    struct stat check;
+    stat(filename, &check);
+
+    return S_IXUSR & (check.st_mode);
+}
+
 int get_size(char *path) {
     int size = 0;
     for (; path[size] != '\0'; size++);

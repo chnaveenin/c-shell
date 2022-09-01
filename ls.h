@@ -3,6 +3,6 @@
 
 #include "header.h"
 
-void ls();
+void ls(char *flags);
 
 #endif

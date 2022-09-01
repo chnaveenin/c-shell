@@ -24,4 +24,8 @@ int allign_str(char *message);
 
 void commands(char *cmd);
 
+int IsDir(char *filename);
+
+int IsExe(char *filename);
+
 #endif

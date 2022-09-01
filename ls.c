@@ -1,19 +1,5 @@
 #include "ls.h"
 
-int IsDir(char *filename) {
-    struct stat check;
-    stat(filename, &check);
-
-    return S_ISDIR(check.st_mode);
-}
-
-int IsExe(char *filename) {
-    struct stat check;
-    stat(filename, &check);
-
-    return S_IXUSR & (check.st_mode);
-}
-
 void bubblesort(char A[MAXLEN][MAXLEN], int size){
     int swap_count = 0;
     char temp[MAXLEN];
@@ -33,7 +19,7 @@ void bubblesort(char A[MAXLEN][MAXLEN], int size){
         bubblesort(A, size-1);
 }
 
-void ls() {
+void ls(char *flags) {
     DIR *curr_dir;
     struct dirent *dir_con;
 
@@ -64,21 +50,20 @@ void ls() {
     for (int j = 0; j < i; j++) {
         if (IsDir(files[j])) {
             printf("\033[1;36m");
-            printf("%s ", files[j]);
+            printf("%s\n", files[j]);
             printf("\033[0;0m");
         }
 
         else if (IsExe(files[j])) {
             printf("\033[31m");
-            printf("%s ", files[j]);
+            printf("%s\n", files[j]);
             printf("\033[0;0m");
         }
         
         else {
-            printf("%s ", files[j]);
+            printf("%s\n", files[j]);
         }
     }
-    printf("\n");
 
     return;
 }
