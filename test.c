@@ -1,106 +1,62 @@
 #include "ls.h"
 
-void ls(char *flags) {
-    DIR *curr_dir;
-    struct dirent *dir_con;
+// void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
+//     if (no_paths == 0) {
+//         no_paths = 1;
+//         paths[0] = ".";
+//     }
 
-    char files[MAXLEN][MAXLEN];
-    char *path;
+//     while(no_paths--) {
+//         D_I_R files[MAXLEN];
+//         paths[no_paths];
+//     }
+// }
 
-    path = ALLOC(MAXLEN);
+void ls(char *flags_paths) {
+    char *check[3];
+    check[0] = "-la";
+    check[1] = "-a";
+    check[2] = "-l";
 
-    if (flags) {
-        int pos = allign_str(flags);
-        flags = flags + pos;
+    char flags[3] = {0, 0, 0};
 
-        if (strcmp(flags, "-l") == 0) {
-            path = ".";
+    char *paths[MAXLEN];
+
+    int no_paths = 0;
+
+    char *token;
+    token = strtok(flags_paths, " ");
+
+    while (token != NULL) {
+        int pos = allign_str(token);
+        token = token + pos;
+        
+        for (int i = 0; i < 3; i++) {
+            if (strcmp(token, check[i]) == 0) {
+                flags[i] = 1;
+                break;
+            }
         }
 
-        else if (strcmp(flags, "-a") == 0) {
-            path = ".";
-            curr_dir = opendir(path);
-
-            int i = 0;
-
-            if (curr_dir) {
-                dir_con = readdir(curr_dir);
-                while (dir_con != NULL) {
-                    strcpy(files[i], dir_con->d_name);
-                    dir_con = readdir(curr_dir);
-                    i++;
-                }
-                closedir(curr_dir);
-            }
-
-            else {
-                perror("directory:");
-            }
-
-            bubblesort(files, i);
-            
-            for (int j = 0; j < i; j++) {
-                if (IsDir(files[j])) {
-                    printf("\033[1;36m");
-                    printf("%s ", files[j]);
-                    printf("\033[0;0m");
-                }
-
-                else if (IsExe(files[j])) {
-                    printf("\033[31m");
-                    printf("%s ", files[j]);
-                    printf("\033[0;0m");
-                }
-                
-                else {
-                    printf("%s ", files[j]);
-                }
-            }
-            printf("\n");
+        if (!flags[0] && !flags[1] && !flags[2]) {
+            paths[no_paths] = token;
+            no_paths++;
         }
+
+        token = strtok(NULL, " ");
     }
 
-    else {
-        path = ".";
-        curr_dir = opendir(path);
-
-        int i = 0;
-
-        if (curr_dir) {
-            dir_con = readdir(curr_dir);
-            while (dir_con != NULL) {
-                if (dir_con->d_name[0] != '.') {
-                    strcpy(files[i], dir_con->d_name);
-                    dir_con = readdir(curr_dir);
-                    i++;
-                }
-            }
-            closedir(curr_dir);
-        }
-
-        else {
-            perror("directory:");
-        }
-
-        bubblesort(files, i);
-    
-        for (int j = 0; j < i; j++) {
-            if (IsDir(files[j])) {
-                printf("\033[1;36m");
-                printf("%s ", files[j]);
-                printf("\033[0;0m");
-            }
-
-            else if (IsExe(files[j])) {
-                printf("\033[31m");
-                printf("%s ", files[j]);
-                printf("\033[0;0m");
-            }
-            
-            else {
-                printf("%s ", files[j]);
-            }
-        }
-        printf("\n");
+    if (flags[0] || (flags[1] && flags[2])) {
+        // implement ls -al paths
     }
+
+    else if (flags[1]) {
+        // implement ls -a paths
+    }
+
+    else if (flags[2]) {
+        // implement ls -l paths
+    }
+
+    return;
 }
