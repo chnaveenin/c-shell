@@ -8,11 +8,22 @@ int compare (const void * a, const void * b) {
   return ( strcmp(fileA->df_name, fileB->df_name) );
 }
 
-void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count) {
+int cmpstr(const void* a, const void* b) {
+
+    const char* aa = *(const char**)a;
+    const char* bb = *(const char**)b;
+
+    return strcmp(aa,bb);
+}
+
+void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count, int corner) {
+
+    // printf("here5\n");
 
     for (int i = 0; i < count; i++) {
         if (flag_l && flag_a) {
-            printf("%s %3d %6d %s ", file[i].flags, file[i].no_links, file[i].no_bytes, file[i].mod_date);
+            printf("%s %3d %s\t %s %6d %s ", file[i].flags, file[i].no_links, file[i].usr_name,
+                                             file[i].grp_name, file[i].no_bytes, file[i].mod_date);
             if (file[i].flags[0] == 'd') {
                 printf("\033[1;36m");
                 printf("%s\n", file[i].df_name);
@@ -31,9 +42,10 @@ void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count) {
         }
 
         else if (flag_l) {
-            if (file[i].df_name[0] == '.')
+            if (file[i].df_name[0] == '.' && corner)
                 continue;
-            printf("%s %3d %6d %s ", file[i].flags, file[i].no_links, file[i].no_bytes, file[i].mod_date);
+            printf("%s %3d %s\t %s %6d %s ", file[i].flags, file[i].no_links, file[i].usr_name,
+                                             file[i].grp_name, file[i].no_bytes, file[i].mod_date);
             if (file[i].flags[0] == 'd') {
                 printf("\033[1;36m");
                 printf("%s\n", file[i].df_name);
@@ -70,7 +82,7 @@ void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count) {
         }
 
         else {
-            if (file[i].df_name[0] == '.')
+            if (file[i].df_name[0] == '.' && corner)
                 continue;
             if (file[i].flags[0] == 'd') {
                 printf("\033[1;36m");
@@ -142,7 +154,13 @@ void storeflags(D_I_R *file, struct stat buffer) {
     sprintf(temp, "%d", dt.tm_min);
     strcat(file->mod_date, temp);
 
-    file->mod_date[12] = '\0'; 
+    file->mod_date[12] = '\0';
+
+    struct passwd *pw = getpwuid(buffer.st_uid);
+    struct group  *gr = getgrgid(buffer.st_gid);
+
+    strcpy(file->usr_name, pw->pw_name);
+    strcpy(file->grp_name, gr->gr_name);
 
     return;
 }
@@ -165,6 +183,7 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
 
         if (no_paths > 1)
             printf("%s:\n", paths[doing]);
+
         int total = 0;
 
         curr_dir = opendir(paths[doing]);
@@ -173,6 +192,7 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
         D_I_R files[MAXLEN];
 
         // printf("here2\n");
+        int corner = 1;
 
         if (curr_dir) {
             dir_con = readdir(curr_dir);
@@ -194,21 +214,47 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
 
                 storeflags(&files[i], buffer);
 
+                if (flag_a == 1) {
+                    total += buffer.st_blocks;
+                }
+
+                else if (files[i].df_name[0] != '.') {
+                    total += buffer.st_blocks;
+                }
+
                 dir_con = readdir(curr_dir);
                 i++;
 
-                if (flag_a == 0) {
-                    if (files[i].df_name[0] == '.') {
-                        continue;
-                    }
-                }
-                total += buffer.st_blocks;
             }
+            if (flag_l)
+                printf("total %d\n", total);
         }
+
+        else {
+            struct stat buffer;
+
+            strcpy(files[i].df_name, paths[doing]);
+
+            char pathforfile[MAXLEN];
+            strcpy(pathforfile, paths[doing]);
+
+            if (stat(pathforfile, &buffer) == 0)
+                storeflags(&files[i], buffer);
+
+            else {
+                perror("ls");
+                doing++;
+                continue;
+            }
+
+            corner = 0;
+
+            // printf("here4\n");
+            i = 1;
+        }
+
         qsort(files, i, sizeof(D_I_R), compare);
-        if (flag_l)
-            printf("total: %d\n", total);
-        printD_I_R(files, flag_a, flag_l, i);
+        printD_I_R(files, flag_a, flag_l, i, corner);
 
         doing++;
     }
@@ -257,6 +303,10 @@ void ls(char *flags_paths) {
         flags[1] = 1;
         flags[2] = 1;
     }
+
+    qsort(paths, no_paths, sizeof(char *), cmpstr);
+
+    // printf("%d %d %d %d\n", flags[0], flags[1], flags[2], flags[3]);
 
     // printf("%d\n", no_paths);
     // for (int i = 0; i < no_paths; i++)

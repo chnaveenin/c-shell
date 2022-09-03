@@ -1,6 +1,8 @@
 #ifndef HEAD_H
 #define HEAD_H
 
+#include <pwd.h>
+#include <grp.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
