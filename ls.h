@@ -4,13 +4,13 @@
 #include "header.h"
 
 struct ls_directory {
-    char *df_name;
-    char flags[9];
-    char *usr_name;
-    char *grp_name;
+    char df_name[MAXLEN];
+    char flags[11];
+    char usr_name[MAXLEN];
+    char grp_name[MAXLEN];
     int  no_links;
     int  no_bytes;
-    char *modifed_date;
+    char mod_date[13];
 };
 
 typedef struct ls_directory D_I_R;
