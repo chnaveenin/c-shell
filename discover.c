@@ -4,6 +4,8 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
     DIR *curr_dir;
     struct dirent *dir_con;
 
+    // printf("TEST: ISDIR(./OSN) = %d\n", IsDir("./OSN"));
+
     if (path[0] == '\0') {
         path = ".";
     }
@@ -31,7 +33,14 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
                         }
                     }
 
-                    if (IsDir(dir_con->d_name)) {
+                    char var_dir[MAXLEN] = "";
+                    strcpy(var_dir, path);
+                    strcat(var_dir, "/");
+                    strcat(var_dir, dir_con->d_name);
+
+                    // printf("ISDIR(%s): %d\n", dir_con->d_name, IsDir(var_dir));
+
+                    if (IsDir(var_dir) == 1) {
                         char path1[MAXLEN] = "";
                         strcpy(path1, path);
                         strcat(path1, "/");
@@ -47,7 +56,7 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
         }
 
         else {
-            perror("directory:");
+            perror("dir");
         }
     }
 
@@ -57,7 +66,15 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
             
             while (dir_con != NULL) {
                 if (dir_con->d_name[0] != '.') {
-                    if (IsDir(dir_con->d_name)) {
+
+                    char var_dir[MAXLEN] = "";
+                    strcpy(var_dir, path);
+                    strcat(var_dir, "/");
+                    strcat(var_dir, dir_con->d_name);
+
+                    // printf("ISDIR(%s): %d\n", dir_con->d_name, IsDir(var_dir));
+
+                    if (IsDir(var_dir) == 1) {
 
                         if (file[0] == '\0') {
                             printf("%s/%s\n", path, dir_con->d_name);
@@ -74,7 +91,7 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
                         strcat(path1, "/");
                         strcat(path1, dir_con->d_name);
 
-                        printf("%s\n", path1);
+                        // printf("%s\n", path1);
 
                         discover_rec(path1, file, flag_d, flag_f);
                     }
@@ -85,7 +102,7 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
         }
 
         else {
-            perror("directory:");
+            perror("dir");
         }
     }
 
@@ -95,7 +112,14 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
             
             while (dir_con != NULL) {
                 if (dir_con->d_name[0] != '.') {
-                    if (!IsDir(dir_con->d_name)) {
+                    char var_dir[MAXLEN] = "";
+                    strcpy(var_dir, path);
+                    strcat(var_dir, "/");
+                    strcat(var_dir, dir_con->d_name);
+
+                    // printf("ISDIR(%s): %d\n", dir_con->d_name, IsDir(var_dir));
+
+                    if (IsDir(var_dir) == 0) {
                         if (file[0] == '\0') {
                             printf("%s/%s\n", path, dir_con->d_name);
                         }
@@ -123,7 +147,7 @@ void discover_rec(char *path, char *file, int flag_d, int flag_f) {
             closedir(curr_dir);
         }
         else {
-            perror("directory:");
+            perror("dir");
         }
     }
 
