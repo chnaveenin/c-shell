@@ -40,22 +40,22 @@ int allign_str(char *message) {
 
 void prompt() {
 
-    char *path = ALLOC(MAXLEN);
-    getcwd(path, MAXLEN);
+    pr_path = ALLOC(MAXLEN);
+    getcwd(pr_path, MAXLEN);
 
     new_path = ALLOC(MAXLEN);
 
-    if (strcmp(path, root) == 0) {
+    if (strcmp(pr_path, root) == 0) {
         new_path = "~";
     }
 
     else {
-        if (strncmp(path, root, get_size(root)-1) == 0) {
+        if (strncmp(pr_path, root, get_size(root)-1) == 0) {
             new_path[0] = '~';
             int ptr = 1;
 
-            for (int i = get_size(root); path[i] != '\0'; i++, ptr++) {
-                new_path[ptr] = path[i];
+            for (int i = get_size(root); pr_path[i] != '\0'; i++, ptr++) {
+                new_path[ptr] = pr_path[i];
             }
 
             new_path[ptr] = '\0';

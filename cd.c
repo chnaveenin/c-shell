@@ -1,4 +1,5 @@
 #include "cd.h"
+#include "prompt.h"
 
 void cd(char *path) {
     int pos = allign_str(path);
@@ -8,21 +9,24 @@ void cd(char *path) {
         if (prev_dir) {
             chdir(prev_dir);
             commands("pwd");
-        } 
-        return;
-    } 
-
-    getcwd(prev_dir, MAXLEN);
-
-    if (strcmp(path, "~") == 0 || strcmp(path, "\0") == 0) {
-        if (chdir(root) != 0) {
-            perror("cderr");
+            prev_dir = pr_path;
         }
+        return;
     }
 
     else {
-        if (chdir(path) != 0) {
-            perror("cderr");
+        getcwd(prev_dir, MAXLEN);
+
+        if (strcmp(path, "~") == 0 || strcmp(path, "\0") == 0) {
+            if (chdir(root) != 0) {
+                perror("cderr");
+            }
+        }
+
+        else {
+            if (chdir(path) != 0) {
+                perror("cderr");
+            }
         }
     }
     return;

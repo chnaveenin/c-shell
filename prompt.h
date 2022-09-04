@@ -3,7 +3,7 @@
 
 #include "header.h"
 
-char *new_path;
+char *new_path, *pr_path;
 
 void prompt();
 
