@@ -55,7 +55,10 @@ void x_command() {
                     commands(tok_token[programs]+pos);
 
                     curr_seconds = clock();
-                    printf("%s with pid = %d exited normally # After %lf seconds\n", tok_token[0]+pos, pid, ((float)(curr_seconds - prev_seconds))/CLOCKS_PER_SEC);
+                    printf("%s with pid = %d exited normally # After %lf seconds\n",
+                            tok_token[0]+pos,
+                            pid,
+                            ((float)(curr_seconds - prev_seconds))/CLOCKS_PER_SEC);
 
                     exit(0);
                 }
@@ -84,7 +87,10 @@ void x_command() {
                         commands(tok_token[prog_programs]+pos);
 
                         curr_seconds = clock();
-                        printf("%s with pid = %d exited normally # After %lf seconds\n", tok_token[prog_programs]+pos, pid, ((float)(curr_seconds - prev_seconds))/CLOCKS_PER_SEC);
+                        printf("%s with pid = %d exited normally # After %lf seconds\n",
+                                tok_token[prog_programs]+pos,
+                                pid,
+                                ((float)(curr_seconds - prev_seconds))/CLOCKS_PER_SEC);
 
                         exit(0);
                     }
