@@ -51,7 +51,7 @@ void pinfo(char *id) {
     strcpy(file, path);
     strcat(file, "/exe");
 
-    printf("%s\n", file);
+//     printf("%s\n", file);
 
     int size = readlink(file, exe_path, 1023);
     exe_path[size] = '\0';
