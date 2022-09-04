@@ -36,6 +36,27 @@ void commands(char *cmd) {
         discover(cmd+8);
     }
 
+    else {
+        int i = 0;
+
+        char *token[MAXLEN];
+        token[i] = strtok(cmd, " ");
+
+        while (token[i] != NULL) {
+            int pos = allign_str(token[i]);
+            token[i] = token[i] + pos;
+
+            i++;
+            token[i] = strtok(NULL, " ");
+        }
+
+        int pid = fork();
+            if (pid == 0)
+                execvp(token[0], token);
+            else
+                wait(0);
+    }
+
     return;
 }
 
