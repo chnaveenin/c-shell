@@ -251,7 +251,7 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
             if (max_len_grp < get_size(files[i].grp_name)) {
                 max_len_grp = get_size(files[i].grp_name);
             }
-
+            
             corner = 0;
             i = 1;
         }
