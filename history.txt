@@ -1,0 +1,35 @@
+ls
+history
+pinfo
+clear
+ls -al
+ls -al echo.c
+clear
+cat history.txt
+what
+sleep 2
+ls
+nope
+not me
+echo navve
+echo hello world
+history
+ls
+history
+clear
+ls
+ls -l
+ls -al
+clear
+history
+ls
+history
+ls
+ls -a
+ls -al
+clear
+cat history.txt
+history
+sleep 2 & echo hello world
+
+

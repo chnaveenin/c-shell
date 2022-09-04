@@ -1,4 +1,6 @@
 #include "exec.h"
+#include "header.h"
+#include "history.h"
 
 void x_command() {
     char command[MAXLEN];
@@ -15,6 +17,9 @@ void x_command() {
         command[j] = c;
     }
     command[j+1]='\0';
+
+    // printf("%s\n", command);
+    storeCommand(command);
 
     int i;
     if (strcmp(command, "") != 0) {

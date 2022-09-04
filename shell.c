@@ -7,8 +7,10 @@
 #include "pinfo.h"
 #include "prompt.h"
 #include "pwd.h"
+#include "history.h"
 
 void commands(char *cmd) {
+
     if (strcmp(cmd, "exit") == 0)
         exit(0);
     
@@ -36,6 +38,10 @@ void commands(char *cmd) {
         discover(cmd+8);
     }
 
+    else if (strcmp(cmd, "history") == 0) {
+        printHistory();
+    }
+
     else {
         int i = 0;
 
@@ -51,12 +57,13 @@ void commands(char *cmd) {
         }
 
         int pid = fork();
-            if (pid == 0)
-                execvp(token[0], token);
+            if (pid == 0) {
+                if (execvp(token[0], token) < 0)
+                    perror("cmd");
+            }
             else
                 wait(0);
     }
-
     return;
 }
 
