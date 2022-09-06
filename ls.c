@@ -42,7 +42,7 @@ void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count, int corner, int 
 
     for (int i = 0; i < count; i++) {
         if (flag_l && flag_a) {
-            printf("%s  %*d %*s %*s  %*d %s ", file[i].flags, link, file[i].no_links, usr, file[i].usr_name,
+            printf("%s %*d %*s %*s %*d %s ", file[i].flags, link, file[i].no_links, usr, file[i].usr_name,
                                                grp, file[i].grp_name, byte, file[i].no_bytes, file[i].mod_date);
             printfiles(file[i]);
         }
@@ -50,7 +50,7 @@ void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count, int corner, int 
         else if (flag_l) {
             if (file[i].df_name[0] == '.' && corner)
                 continue;
-            printf("%s  %*d %*s %*s  %*d %s ", file[i].flags, link, file[i].no_links, -usr, file[i].usr_name,
+            printf("%s %*d %*s %*s %*d %s ", file[i].flags, link, file[i].no_links, -usr, file[i].usr_name,
                                                -grp, file[i].grp_name, byte, file[i].no_bytes, file[i].mod_date);
             printfiles(file[i]);
         }

@@ -4,7 +4,11 @@ int read_last_line () {
     char line[MAXLEN], lastline[MAXLEN];
     int no_cmds = 0;
 
-    FILE *fileptr = fopen("history.txt", "r");
+    char fpath[MAXLEN];
+    strcpy(fpath, root);
+    strcat(fpath, "/history.txt");
+
+    FILE *fileptr = fopen(fpath, "r");
 
     while (fscanf(fileptr, "%[^\n]s", line) > 0) {
         fgetc(fileptr);
@@ -18,7 +22,12 @@ int read_last_line () {
 
 void see_last_line(char lastline[]) {
     char line[MAXLEN];
-    FILE *fileptr = fopen("history.txt", "r");
+
+    char fpath[MAXLEN];
+    strcpy(fpath, root);
+    strcat(fpath, "/history.txt");
+
+    FILE *fileptr = fopen(fpath, "r");
 
     while (fscanf(fileptr, "%[^\n]s", line) > 0) {
         fgetc(fileptr);
@@ -29,7 +38,14 @@ void see_last_line(char lastline[]) {
 }
 
 void storeCommand (char *cmd) {
-    FILE *fileptr = fopen("history.txt", "a");
+    if (cmd[0] == '\n')
+        return;
+
+    char fpath[MAXLEN];
+    strcpy(fpath, root);
+    strcat(fpath, "/history.txt");
+
+    FILE *fileptr = fopen(fpath, "a");
 
     int no_cmds = read_last_line();
 
@@ -39,29 +55,58 @@ void storeCommand (char *cmd) {
     int pos = allign_str(cmd);
     cmd = cmd + pos;
 
-    // printf("in storeCommand: %s, %d cmd: %s\n", lastline, no_cmds, cmd);
-
     if (no_cmds > 0 && strcmp(lastline, cmd) == 0) {
         fclose(fileptr);
         return;
     }
-    fprintf(fileptr, "%s\n", cmd);
 
-    fclose(fileptr);
+    else if (no_cmds == 20) {
+        char hist_arr[20][MAXLEN];
+        strcpy(hist_arr[19], cmd);
+
+        char temp[MAXLEN];
+        fclose(fileptr);
+        
+        fileptr = fopen(fpath, "r");
+        fscanf(fileptr, "%[^\n]s", temp);
+        fgetc(fileptr);
+        for (int i = 0; i < 19; i++) {
+            fscanf(fileptr, "%[^\n]s", hist_arr[i]);
+            fgetc(fileptr);
+        }
+        fclose(fileptr);
+
+        fileptr = fopen(fpath, "w");
+        for (int i = 0; i < 20; i++) {
+            fprintf(fileptr, "%s\n", hist_arr[i]);
+        }
+
+        fclose(fileptr);
+    }
+
+    else {
+        fprintf(fileptr, "%s\n", cmd);
+        fclose(fileptr);
+    }
 
     return;
 }
 
 void printHistory () {
-    FILE *fileptr = fopen("history.txt", "r");
+    char fpath[MAXLEN];
+    strcpy(fpath, root);
+    strcat(fpath, "/history.txt");
+
+    FILE *fileptr = fopen(fpath, "r");
 
     int no_cmds = read_last_line();
 
     fclose(fileptr);
 
-    fileptr = fopen("history.txt", "r");
+    strcpy(fpath, root);
+    strcat(fpath, "/history.txt");
 
-    // printf("noofcommands: %d\n", no_cmds);
+    fileptr = fopen(fpath, "r");
 
     char line[MAXLEN];
 

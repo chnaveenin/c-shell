@@ -38,7 +38,7 @@ int allign_str(char *message) {
     return i;
 }
 
-void prompt() {
+void prompt(time_t time_gap) {
 
     pr_path = ALLOC(MAXLEN);
     getcwd(pr_path, MAXLEN);
@@ -50,11 +50,14 @@ void prompt() {
     }
 
     else {
-        if (strncmp(pr_path, root, get_size(root)-1) == 0) {
+        char temp[MAXLEN];
+        strcpy(temp, root);
+        strcat(temp, "/");
+        if (strncmp(pr_path, temp, get_size(temp)) == 0) {
             new_path[0] = '~';
             int ptr = 1;
 
-            for (int i = get_size(root); pr_path[i] != '\0'; i++, ptr++) {
+            for (int i = get_size(temp)-1; pr_path[i] != '\0'; i++, ptr++) {
                 new_path[ptr] = pr_path[i];
             }
 
@@ -65,9 +68,20 @@ void prompt() {
             getcwd(new_path, MAXLEN);
         }
     }
+    
+    char time_str[MAXLEN];
+
+    if (time_gap > 0) {
+        sprintf(time_str, "took%lds", time_gap);
+    }
+    else
+        strcpy(time_str, "");
 
     printf("\033[1;36m");
-    printf("<%s@%s:%s>", u_name, s_name, new_path);
+    printf("<%s@%s:", u_name, s_name);
+    printf("\033[0;0m");
+    printf("\033[1;31m");
+    printf("%s%s>", new_path, time_str);
     printf("\033[0;0m");
     printf(" ");
 

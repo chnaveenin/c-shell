@@ -11,6 +11,8 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
 
@@ -19,6 +21,14 @@
 
 char *u_name, *s_name, *root, *curr;
 char *prev_dir;
+
+int *no_bg_process;
+int *bg_process_ids;
+char (*bg_processes)[MAXLEN];
+int *bg_process_times;
+int *bg_number;
+
+time_t prev_sec, curr_sec;
 
 int get_size(char *path);
 

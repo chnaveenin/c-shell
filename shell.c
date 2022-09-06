@@ -8,9 +8,14 @@
 #include "prompt.h"
 #include "pwd.h"
 #include "history.h"
+#include "bg.h"
+
+void delay(int number_of_milli_seconds) {
+    clock_t start_time = clock();
+    while (clock() < start_time + number_of_milli_seconds);
+}
 
 void commands(char *cmd) {
-
     if (strcmp(cmd, "exit") == 0)
         exit(0);
     
@@ -57,20 +62,26 @@ void commands(char *cmd) {
         }
 
         int pid = fork();
-            if (pid == 0) {
-                if (execvp(token[0], token) < 0)
-                    perror("cmd");
-            }
-            else
-                wait(0);
+        if (pid == 0) {
+            if (execvp(token[0], token) < 0)
+                printf("cmd: no such command\n");
+            exit(0);
+        }
+        else {
+            int status;
+            waitpid(pid, &status, 0);
+        }
     }
+    
     return;
 }
 
 void shell() {
     while (1) {
-        prompt();
+        prompt(curr_sec-prev_sec);
         x_command();
+        time(&curr_sec);
+        check_print_process();
     }
 }
 
@@ -83,6 +94,27 @@ int main() {
     if (gethostname(s_name, MAXLEN) < 0)
         perror("hostname too large");
     getcwd(root, MAXLEN);
+
+    int no_bg = 0;
+    no_bg_process = &no_bg;
+
+    bg_process_ids = mmap(NULL, sizeof *bg_process_ids, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    bg_processes = mmap(NULL, MAXLEN*MAXLEN, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    bg_process_times = mmap(NULL, sizeof *bg_process_times, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    bg_number = mmap(NULL, sizeof *bg_number, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    no_bg_process = mmap(NULL, sizeof *no_bg_process, PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
+    for (int i = 0; i < MAXLEN; i++) {
+        bg_process_times[i] = -11;
+        strcpy(bg_processes[i], "process");
+        bg_processes[i][0] = 'p';
+        bg_processes[i][1] = '\0';
+    }
 
     shell();
 
