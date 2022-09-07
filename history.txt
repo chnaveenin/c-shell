@@ -1,20 +1,20 @@
-afsf
-jkfa
-asfa
-fa
-afsf
-his
-history
-nsd
-fsdf
-sgsfs
-history -10
-sleep 2 & sleep 5 &
-sleep 5
-cd DSA
+ls &
 clear
-clear &
-cd DSA
-;s
+exit
+ls ;;
+ls ; ;
+;;
+ls ;;
+ls ; ;
+ls ;;
+ls ; ;
+ls &&
+ls ;;
+sleep 5 &&
+;
+hello world
+echo hello world
 ls
-ls -al
+rm -r shell.dSYM
+clear
+exit

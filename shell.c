@@ -16,8 +16,24 @@ void delay(int number_of_milli_seconds) {
 }
 
 void commands(char *cmd) {
-    if (strcmp(cmd, "exit") == 0)
-        exit(0);
+    if (strcmp(cmd, "exit") == 0) {
+        if (*no_bg_process == 0) {
+            check_print_process();
+            exit(0);
+        }
+            
+        else {
+            printf("%d background processes are running, do you wish to terminate them?(y/n)", *no_bg_process);
+            char c = getchar();
+            getchar();
+            if (c == 'y') {
+                kill(0, 0);
+                exit(0);
+            }
+            else
+                return;
+        }
+    }
     
     else if (strcmp(cmd, "cd") == 0 || strncmp(cmd, "cd ", sizeof("cd ")-1) == 0) {
         cd(cmd+2);

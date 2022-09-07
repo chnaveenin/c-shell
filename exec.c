@@ -64,6 +64,7 @@ void x_command() {
                     
                     int pos = allign_str(tok_token[0]);
                     commands(tok_token[0]+pos);
+
                     // printf("here exec\n");
 
                     time(&curr_seconds);

@@ -42,15 +42,15 @@ void printD_I_R(D_I_R *file, int flag_a, int flag_l, int count, int corner, int 
 
     for (int i = 0; i < count; i++) {
         if (flag_l && flag_a) {
-            printf("%s %*d %*s %*s %*d %s ", file[i].flags, link, file[i].no_links, usr, file[i].usr_name,
-                                               grp, file[i].grp_name, byte, file[i].no_bytes, file[i].mod_date);
+            printf("%s  %*d  %*s  %*s  %*d %s ", file[i].flags, link, file[i].no_links, -usr, file[i].usr_name,
+                                               -grp, file[i].grp_name, byte, file[i].no_bytes, file[i].mod_date);
             printfiles(file[i]);
         }
 
         else if (flag_l) {
             if (file[i].df_name[0] == '.' && corner)
                 continue;
-            printf("%s %*d %*s %*s %*d %s ", file[i].flags, link, file[i].no_links, -usr, file[i].usr_name,
+            printf("%s  %*d  %*s  %*s  %*d %s ", file[i].flags, link, file[i].no_links, -usr, file[i].usr_name,
                                                -grp, file[i].grp_name, byte, file[i].no_bytes, file[i].mod_date);
             printfiles(file[i]);
         }
@@ -198,7 +198,7 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
                 if (max_len_usr < get_size(files[i].usr_name)) {
                     max_len_usr = get_size(files[i].usr_name);
                 }
-
+ 
                 if (max_len_grp < get_size(files[i].grp_name)) {
                     max_len_grp = get_size(files[i].grp_name);
                 }
@@ -268,7 +268,7 @@ void ls_print(char *paths[], int flag_a, int flag_l, int no_paths) {
         // printf("%d %d\n", byte, link);
 
         qsort(files, i, sizeof(D_I_R), compare);
-        printD_I_R(files, flag_a, flag_l, i, corner, byte, link, max_len_grp, max_len_usr);
+        printD_I_R(files, flag_a, flag_l, i, corner, byte, link, max_len_usr, max_len_grp);
 
         doing++;
     }
