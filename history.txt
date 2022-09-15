@@ -1,20 +1,20 @@
-ls &
 clear
-exit
-ls ;;
-ls ; ;
-;;
-ls ;;
-ls ; ;
-ls ;;
-ls ; ;
-ls &&
-ls ;;
-sleep 5 &&
-;
-hello world
-echo hello world
-ls
-rm -r shell.dSYM
+gedit
+jobs
+sleep 23 &
+sig 1 19
+bg 1
+sig 1 9
+jobs
 clear
+sleep 5
+sleep 5 &
+sig 1 17
+jobs
+sleep 23
+jobs
+fg 1
+sleep 23
+fg 1
+code .
 exit

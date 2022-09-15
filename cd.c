@@ -8,7 +8,7 @@ void cd(char *path) {
     if (strcmp(path, "-") == 0) {
         if (prev_dir) {
             chdir(prev_dir);
-            commands("pwd");
+            commands("pwd", 0);
             prev_dir = pr_path;
         }
         return;

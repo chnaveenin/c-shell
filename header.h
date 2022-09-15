@@ -28,13 +28,16 @@ char (*bg_processes)[MAXLEN];
 int *bg_process_times;
 int *bg_number;
 
+int  proc;
+char *proc_cmd;
+
 time_t prev_sec, curr_sec;
 
 int get_size(char *path);
 
 int allign_str(char *message);
 
-void commands(char *cmd);
+void commands(char *cmd, int flag);
 
 int IsDir(char *filename);
 

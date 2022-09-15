@@ -13,7 +13,7 @@ int cmpstr(const void* a, const void* b) {
     const char* aa = *(const char**)a;
     const char* bb = *(const char**)b;
 
-    return strcmp(aa,bb);
+    return ( strcmp(aa, bb) );
 }
 
 void printfiles(D_I_R file) {

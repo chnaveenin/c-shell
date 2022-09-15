@@ -130,4 +130,6 @@ From the root directory of project, run `make` followed by `./shell`
 
 - `&` (used for running process in background) can come anywhere in command.
 
-- A file (`history.txt`) is used to store history in a readable format. Any changes explicitly done in this file may result in unexpected output of `history` command.
+- The time taken by the foreground processes is the sum of times taken by each process
+
+- A file (`history.txt`) is used to store history (last 20 commands only) in a readable format. Any changes explicitly done in this file may result in unexpected output of `history` command.

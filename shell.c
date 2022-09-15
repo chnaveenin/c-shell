@@ -9,13 +9,15 @@
 #include "pwd.h"
 #include "history.h"
 #include "bg.h"
+#include "fg.h"
+#include "jobs.h"
 
 void delay(int number_of_milli_seconds) {
     clock_t start_time = clock();
     while (clock() < start_time + number_of_milli_seconds);
 }
 
-void commands(char *cmd) {
+void commands(char *cmd, int flag) {
     if (strcmp(cmd, "exit") == 0) {
         if (*no_bg_process == 0) {
             check_print_process();
@@ -23,7 +25,7 @@ void commands(char *cmd) {
         }
             
         else {
-            printf("%d background processes are running, do you wish to terminate them?(y/n)", *no_bg_process);
+            printf("%d background processes are running, do you wish to terminate them? (y or n) ", *no_bg_process);
             char c = getchar();
             getchar();
             if (c == 'y') {
@@ -63,6 +65,22 @@ void commands(char *cmd) {
         printHistory();
     }
 
+    else if (strcmp(cmd, "jobs") == 0 || strncmp(cmd, "jobs ", sizeof("jobs ")-1) == 0) {
+        jobs(cmd+4);
+    }
+
+    else if (strncmp(cmd, "fg ", sizeof("fg ")-1) == 0) {
+        fg(cmd+2);
+    }
+
+    else if (strncmp(cmd, "bg ", sizeof("bg ")-1) == 0) {
+        bg(cmd+2);
+    }
+
+    else if (strncmp(cmd, "sig ", sizeof("sig ")-1) == 0) {
+        sig(cmd+3);
+    }
+
     else {
         int i = 0;
 
@@ -77,20 +95,32 @@ void commands(char *cmd) {
             token[i] = strtok(NULL, " ");
         }
 
-        int pid = fork();
-        if (pid == 0) {
+        if (flag) {
+            int pid = fork();
+            if (pid == 0) {
+                if (execvp(token[0], token) < 0)
+                    printf("cmd: no such command\n");
+                exit(0);
+            }
+            else {
+                int status;
+                proc = pid;
+                proc_cmd = token[0];
+                waitpid(pid, &status, WUNTRACED);
+            }
+        }
+
+        else {
             if (execvp(token[0], token) < 0)
                 printf("cmd: no such command\n");
             exit(0);
         }
-        else {
-            int status;
-            waitpid(pid, &status, 0);
-        }
     }
-    
     return;
 }
+
+void sigint_handle();
+void sigtstp_handle();
 
 void shell() {
     while (1) {
@@ -99,6 +129,34 @@ void shell() {
         time(&curr_sec);
         check_print_process();
     }
+}
+
+void sigint_handle() {
+    if (proc > 0) {
+        kill(proc, SIGKILL);
+        proc = -1;
+    }
+    printf("\n");
+    return;
+}
+
+void sigtstp_handle() {
+    if (proc > 0) {
+        int retval = fork();
+        if (retval == 0) {
+            pid_t pgid = getpgid(getpid());
+            setpgid(proc, pgid);
+            kill(proc, SIGSTOP);
+            exit(0);
+        }
+        else {
+            store_bg_process(proc, proc_cmd);
+            printf("\n[%d] %d\n", *no_bg_process, proc);
+            proc = -1;
+            return;
+        }
+    }
+    return;
 }
 
 int main() {
@@ -111,7 +169,9 @@ int main() {
         perror("hostname too large");
     getcwd(root, MAXLEN);
 
+    proc = -1;
     int no_bg = 0;
+    int max_no_count = 0;
     no_bg_process = &no_bg;
 
     bg_process_ids = mmap(NULL, sizeof *bg_process_ids, PROT_READ | PROT_WRITE, 
@@ -131,6 +191,10 @@ int main() {
         bg_processes[i][0] = 'p';
         bg_processes[i][1] = '\0';
     }
+
+    printf("welcome to naveen's custom c-shell\n");
+    signal(SIGINT, sigint_handle);
+    signal(SIGTSTP, sigtstp_handle);
 
     shell();
 
