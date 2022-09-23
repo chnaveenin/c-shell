@@ -1,20 +1,20 @@
 clear
-gedit
-jobs
-sleep 23 &
-sig 1 19
-bg 1
-sig 1 9
 jobs
 clear
-sleep 5
-sleep 5 &
-sig 1 17
 jobs
-sleep 23
+sig 1 9
+clear
+jobs
+clear
+sleep 1
+sleep 10
 jobs
 fg 1
+jobs
 sleep 23
 fg 1
-code .
-exit
+clear
+cd ..
+ls
+working good
+now

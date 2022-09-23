@@ -5,6 +5,7 @@
 #include <grp.h>
 #include <time.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>

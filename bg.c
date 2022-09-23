@@ -24,7 +24,7 @@ void store_bg_process(pid_t pid, char *cmd) {
                 j++;
             }
             temp[j] = '\0';
-            strcpy(bg_processes[i], temp);
+            strcpy(bg_processes[i], cmd);
 
             break;
         }
