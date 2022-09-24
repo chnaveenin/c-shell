@@ -1,20 +1,81 @@
+cd echo.c
+echo Hhello
+exit
+cd ok
 clear
-jobs
+cd e
+exit
+cd echo.c
+cd hishory.
 clear
-jobs
-sig 1 9
+exit
+cat histxty.
+exit
+cat history.txt
+done autocomplete
 clear
-jobs
+cd .v
+ls
+cd .v
+
+
+sleep 5
 clear
-sleep 1
-sleep 10
-jobs
-fg 1
-jobs
-sleep 23
-fg 1
-clear
+
+
+
+
+
+sleep 5
+exit
+cd .
 cd ..
 ls
-working good
-now
+cd ..
+ls
+cd assignment-1
+cd ..
+cd ..
+ls
+cd ../..
+ls
+cd ..
+,s
+ls
+../../..
+ls
+cd ../../..
+ls
+cd assignments
+exit
+cd ../../../
+ls
+cdassignments
+exit
+ls
+cd ../../..
+cd assignments
+clear
+cd assignment-3
+exit
+cd ../../..
+cd assignments
+cd assignment-3
+ls
+cd ../../../
+ls
+cd
+cd asdasd
+exit
+cd ../../..
+ls
+cd exit
+exit
+make
+exi
+cd ../../..
+cd assignments
+cd assignment-3
+cd c-shell-master
+clear
+exit

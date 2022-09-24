@@ -5,3 +5,10 @@ void echo(char *message) {
     printf("%s\n", message+pos);
     return;
 }
+
+    int pos = allign_str(message);
+    printf("%s\n", message+pos);
+    return;
+#include "echo.h"
+void echo(char *message) {
+}

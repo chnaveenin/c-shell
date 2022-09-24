@@ -11,6 +11,9 @@
 #include "pinfo.h"
 #include "prompt.h"
 #include "pwd.h"
+#include "auto.h"
+
+#include <stdio.h>
 
 void delay(int number_of_milli_seconds) {
     clock_t start_time = clock();
